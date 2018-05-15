@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Martin Allen, FOAM">
+  <meta name="dcterms.date" content="2017-12-04">
+  <title>Introduction to purescript-web3</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="reveal.js/css/reveal.css">
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="reveal.js/css/theme/simple.css" id="theme">
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ? 'reveal.js/css/print/pdf.css' : 'reveal.js/css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+  </script>
+  <!--[if lt IE 9]>
+  <script src="reveal.js/lib/js/html5shiv.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide">
+  <h1 class="title">Introduction to purescript-web3</h1>
+  <p class="author">Martin Allen, FOAM</p>
+  <p class="date">December 4, 2017</p>
+</section>
+
+<section><section id="ethereum" class="title-slide slide level1"><h1>ethereum</h1></section><section id="what-is-it" class="slide level2">
+<h2>What is it</h2>
+<ul>
+<li>Second most popupular blockchain and cryptocurrency</li>
+<li>Turing-complete<a href="#/fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> statemachine (EVM)</li>
+<li>Allows consensus around execution of smart contracts</li>
+</ul>
+</section><section class="slide level2">
+
+<figure>
+<img data-src="images/txs.png" alt="source: etherscan.io as of 12/2/2017" /><figcaption>source: etherscan.io as of 12/2/2017</figcaption>
+</figure>
+</section><section class="slide level2">
+
+<figure>
+<img data-src="images/addresses.png" alt="source: etherscan.io as of 12/2/2017" /><figcaption>source: etherscan.io as of 12/2/2017</figcaption>
+</figure>
+</section><section class="slide level2">
+
+<figure>
+<img data-src="images/marketcap.png" alt="source: etherscan.io as of 12/2/2017" /><figcaption>source: etherscan.io as of 12/2/2017</figcaption>
+</figure>
+</section><section id="solidity" class="slide level2">
+<h2>Solidity</h2>
+<ul>
+<li>Javascript like syntax</li>
+<li>Special blockchain, crypto and signature-recovery primitives</li>
+<li>Types for EVM primitives such as <code>uint48</code></li>
+<li>Interface through <code>ABI</code></li>
+</ul>
+</section><section class="slide level2">
+
+<div class="sourceCode" id="cb1"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" data-line-number="1">contract GreedyStorage is owned <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">  uint <span class="kw">public</span> m<span class="op">;</span> <span class="co">// automatically generate getM()</span></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">  event <span class="at">Overidden</span>(address overrider)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">  <span class="kw">function</span> <span class="at">increase</span> (uint n) onlyOwner <span class="at">returns</span> (uint) <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">     m <span class="op">=</span> m <span class="op">+</span> n<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6">     <span class="cf">return</span> m<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8">  <span class="kw">function</span> <span class="at">override</span> (uint n) payable <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9">    <span class="at">require</span>(<span class="va">msg</span>.<span class="at">value</span> <span class="op">&gt;</span> <span class="dv">100000</span>)<span class="op">;</span>  <span class="co">// this is the price</span></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10">    m <span class="op">=</span> n<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11">    <span class="at">Overidden</span>(<span class="va">msg</span>.<span class="at">sender</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-12" data-line-number="12">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb1-13" data-line-number="13"><span class="op">}</span></a></code></pre></div>
+<p><a href="https://ethereum.github.io/browser-solidity/#version=soljson-v0.4.19+commit.c4cbbb05.js&amp;optimize=undefined&amp;gist=a90b20b6df66c98f7af2f912952d2b7d">edit on remix</a></p>
+</section><section class="slide level2">
+
+<p>The <strong>selector</strong> is how we speficy the function to execute</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="ot">selector ::</span> <span class="dt">FunctionSignature</span> <span class="ot">-&gt;</span> <span class="dt">ByteString</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">selector <span class="fu">=</span> take <span class="dv">8</span> <span class="fu">$</span> sha3</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="fu">&gt;</span> selector <span class="st">&quot;increase(uint256)&quot;</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="fu">&gt;</span> <span class="st">&quot;30f3f0db&quot;</span></a></code></pre></div>
+<p>so for <code>GreedyStorage</code> we get</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">    <span class="dt">&quot;increase(uint256)&quot;</span> <span class="fu">:</span> <span class="st">&quot;30f3f0db&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">    <span class="dt">&quot;m()&quot;</span>               <span class="fu">:</span> <span class="st">&quot;5a2ee019&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">    <span class="dt">&quot;override(uint256)&quot;</span> <span class="fu">:</span> <span class="st">&quot;94d9e61c&quot;</span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="fu">}</span></a></code></pre></div>
+</section><section id="typesafety-on-chain" class="slide level2">
+<h2>Typesafety (on-chain)</h2>
+<ul>
+<li>Work underway for strongly typed languages targeting EVM</li>
+<li>Typesafe EVM language wouldn’t necessarily have prevented infamous bugs. We’d need session types or similar.</li>
+<li>Fundamental problem is call-out from turingcomplete executable to turing complete executable. Type level information not preserved on EVM.</li>
+</ul>
+</section><section id="typesafety-off-chain" class="slide level2">
+<h2>Typesafety (off-chain)</h2>
+<h3 id="prevent-catastrophes">Prevent catastrophes</h3>
+<ul>
+<li>Encoding errors</li>
+<li>Improper value transfer</li>
+<li>Function/argument mismatch</li>
+</ul>
+</section><section class="slide level2">
+
+<h3 id="conveniences">Conveniences</h3>
+<ul>
+<li>Migrations / CD-CI</li>
+<li>Type safety</li>
+</ul>
+</section><section class="slide level2">
+
+<figure>
+<img data-src="images/rex1.png" alt="REX token sale 7/31/2017" /><figcaption>REX token sale 7/31/2017</figcaption>
+</figure>
+</section><section class="slide level2">
+
+<figure>
+<img data-src="images/rex2.png" alt="Balance of invalid account" /><figcaption>Balance of invalid account</figcaption>
+</figure>
+</section><section class="slide level2">
+
+<p>Subtle changes leading to broken application code</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" data-line-number="1">contract A <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">  uint n<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">  <span class="kw">function</span> <span class="at">A</span> (uint _arg) <span class="op">{</span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">    n <span class="op">=</span> _arg<span class="op">;</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="op">}</span></a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb5-1" data-line-number="1">contract A <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">  int n<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">  <span class="kw">function</span> <span class="at">A</span> (int _arg) <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">    n <span class="op">=</span> _arg<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="op">}</span></a></code></pre></div>
+</section><section class="slide level2">
+
+</section></section>
+<section><section id="purescript" class="title-slide slide level1"><h1>purescript</h1></section><section id="what-is-it-1" class="slide level2">
+<h2>What is it</h2>
+<p>!<span class="citation" data-cites="paf31">[@paf31]</span>(images/paf31.png)</p>
+<p>See Phil’s article <a href="http://blog.functorial.com/posts/2017-08-09-Why-You-Should-Use-PureScript.html">Why you should use purescript?</a> for some of the highlights</p>
+</section><section id="a-haskell-programmers-solution-to-the-javascript-problem" class="slide level2">
+<h2>A haskell programmer’s solution to the javascript problem</h2>
+<ul>
+<li>Algebraic datatypes (sums of products), row types (records)</li>
+<li>Type classes (functor, monad, foldable, etc) and constraints</li>
+<li>Pure, extensible effects (may go away)</li>
+<li>Prism/Lens/Traversable</li>
+</ul>
+</section><section id="a-haskell-programmers-solution-to-the-javascript-problem-1" class="slide level2">
+<h2>A haskell programmer’s solution to the javascript problem</h2>
+<div class="sourceCode" id="cb6"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">data</span> <span class="dt">MyProd</span> <span class="fu">=</span> <span class="dt">MyProd</span> <span class="dt">Int</span> <span class="dt">String</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="kw">data</span> <span class="dt">MySum</span> <span class="fu">=</span> <span class="dt">MyInt</span> <span class="dt">Int</span> </a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">           <span class="fu">|</span> <span class="dt">MyString</span> <span class="dt">String</span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="kw">data</span> <span class="dt">MyRec1</span> <span class="fu">=</span> <span class="dt">MyRec1</span> {<span class="ot">name ::</span> <span class="dt">String</span>,<span class="ot"> size ::</span> <span class="dt">Int</span>}</a>
+<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="kw">data</span> <span class="dt">MyRec2</span> <span class="fu">=</span> <span class="dt">MyRec2</span> {<span class="ot">age ::</span> <span class="dt">Int</span>,<span class="ot"> nice ::</span> <span class="dt">Boolean</span>}</a>
+<a class="sourceLine" id="cb6-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="kw">data</span> <span class="dt">MyRecProd</span> <span class="fu">=</span> <span class="dt">MyRecProd</span> <span class="dt">MyRec1</span> <span class="dt">MyRec2</span></a>
+<a class="sourceLine" id="cb6-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="kw">data</span> <span class="dt">MyRecSum</span>  <span class="fu">=</span> <span class="dt">FirstRec</span> <span class="dt">MyRec1</span> </a>
+<a class="sourceLine" id="cb6-12" data-line-number="12">               <span class="fu">|</span> <span class="dt">SndRec</span> <span class="dt">MyRec2</span></a></code></pre></div>
+</section><section id="a-haskell-programmers-solution-to-the-javascript-problem-2" class="slide level2">
+<h2>A haskell programmer’s solution to the javascript problem</h2>
+<ul>
+<li>Compiles to clean (human readable) JS code</li>
+<li>Easy FFI, use existing js libraries whenever makes sense</li>
+<li>Doesn’t yet optimize</li>
+</ul>
+</section><section id="comparison-with-elm" class="slide level2">
+<h2>Comparison with <code>elm</code></h2>
+<ul>
+<li>Functional, row types</li>
+<li>Arguably easier to get started</li>
+<li>Weaker type system (effects, polymorphism, typeclasses)</li>
+</ul>
+</section><section id="comparison-with-ghcjs" class="slide level2">
+<h2>Comparison with <code>ghcjs</code></h2>
+<ul>
+<li>Make use of existing haskell ecosystem</li>
+<li>Laziness, garbage collection, shared code</li>
+<li>Heavy (needs runtime)</li>
+</ul>
+</section><section id="solidity-types" class="slide level2">
+<h2>Solidity Types</h2>
+</section><section class="slide level2">
+
+<h3 id="sized-types">Sized Types</h3>
+<ul>
+<li>Purescript does not as of yet have type level naturals</li>
+<li>Luckily we don’t need infinitely many</li>
+</ul>
+<div class="sourceCode" id="cb7"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">module</span> <span class="dt">Network.Ethereum.Web3.Solidity.Size</span> <span class="kw">where</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="kw">data</span> <span class="dt">D0</span> </a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="fu">...</span> </a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="kw">data</span> <span class="dt">D9</span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="kw">data</span><span class="ot"> (:&amp;) ::</span> <span class="dt">Type</span> <span class="ot">-&gt;</span> <span class="dt">Type</span> <span class="ot">-&gt;</span> <span class="dt">Type</span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="kw">data</span> <span class="dt">Z</span><span class="ot"> ::</span> <span class="dt">Type</span></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="kw">data</span> <span class="dt">S</span><span class="ot"> ::</span> <span class="dt">Type</span> <span class="ot">-&gt;</span> <span class="dt">Type</span></a>
+<a class="sourceLine" id="cb7-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="kw">class</span> <span class="dt">KnownSize</span> s</a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="kw">class</span> <span class="dt">KnownNat</span> n</a>
+<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="kw">class</span> <span class="dt">KnownSize</span> n <span class="fu">&lt;=</span> <span class="dt">ByteSize</span> n</a>
+<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="kw">class</span> <span class="dt">KnownSize</span> n <span class="fu">&lt;=</span> <span class="dt">IntSize</span> n</a>
+<a class="sourceLine" id="cb7-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="kw">type</span> <span class="dt">N4</span> <span class="fu">=</span> <span class="dt">S</span> (<span class="dt">S</span> (<span class="dt">S</span> (<span class="dt">S</span> <span class="dt">Z</span>)))</a></code></pre></div>
+</section><section class="slide level2">
+
+<h3 id="sized-ints">Sized Ints</h3>
+<ul>
+<li>js doesn’t have unbounded integers (doesn’t even have integers!)</li>
+<li>need something like <code>BigNumber</code></li>
+</ul>
+<div class="sourceCode" id="cb8"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">newtype</span> <span class="dt">UIntN</span> n <span class="fu">=</span> <span class="dt">UIntN</span> <span class="dt">BigNumber</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="ot">uIntNFromBigNumber ::</span> forall n <span class="fu">.</span> <span class="dt">KnownSize</span> n </a>
+<a class="sourceLine" id="cb8-4" data-line-number="4">                   <span class="ot">=&gt;</span> <span class="dt">BigNumber</span> </a>
+<a class="sourceLine" id="cb8-5" data-line-number="5">                   <span class="ot">-&gt;</span> <span class="dt">Maybe</span> (<span class="dt">UIntN</span> n)</a>
+<a class="sourceLine" id="cb8-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="kw">type</span> <span class="dt">UInt</span> <span class="fu">=</span> <span class="dt">UIntN</span> (<span class="dt">D2</span> <span class="fu">:&amp;</span> <span class="dt">D5</span> <span class="fu">:&amp;</span> <span class="dt">D6</span>)</a></code></pre></div>
+</section><section class="slide level2">
+
+<h3 id="length-indexed-vectors">Length Indexed Vectors</h3>
+<div class="sourceCode" id="cb9"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">newtype</span> <span class="dt">Vector</span> n a <span class="fu">=</span> <span class="dt">Vector</span> (<span class="dt">Array</span> a)</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="ot">nilVector ::</span> forall a <span class="fu">.</span> <span class="dt">Vector</span> <span class="dt">Z</span> a</a>
+<a class="sourceLine" id="cb9-4" data-line-number="4">nilVector <span class="fu">=</span> <span class="dt">Vector</span> mempty</a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="ot">vCons ::</span> forall a n <span class="fu">.</span> a </a>
+<a class="sourceLine" id="cb9-7" data-line-number="7">      <span class="ot">-&gt;</span> <span class="dt">Vector</span> n a </a>
+<a class="sourceLine" id="cb9-8" data-line-number="8">      <span class="ot">-&gt;</span> <span class="dt">Vector</span> (<span class="dt">S</span> n) a</a>
+<a class="sourceLine" id="cb9-9" data-line-number="9">vCons a (<span class="dt">Vector</span> as) <span class="fu">=</span> <span class="dt">Vector</span> (a <span class="fu">:</span> as)</a>
+<a class="sourceLine" id="cb9-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="kw">infixr</span> <span class="dv">6</span> vCons as <span class="fu">:&lt;</span></a>
+<a class="sourceLine" id="cb9-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="ot">toVector ::</span> forall a n <span class="fu">.</span> <span class="dt">KnownNat</span> n </a>
+<a class="sourceLine" id="cb9-14" data-line-number="14">         <span class="ot">=&gt;</span> <span class="dt">Array</span> a </a>
+<a class="sourceLine" id="cb9-15" data-line-number="15">         <span class="ot">-&gt;</span> <span class="dt">Maybe</span> (<span class="dt">Vector</span> n a)</a>
+<a class="sourceLine" id="cb9-16" data-line-number="16">toVector as <span class="fu">=</span> <span class="kw">if</span> natVal (<span class="dt">Proxy</span><span class="ot"> ::</span> <span class="dt">Proxy</span> n) <span class="fu">/=</span> A.length as</a>
+<a class="sourceLine" id="cb9-17" data-line-number="17">                 <span class="kw">then</span> <span class="dt">Nothing</span></a>
+<a class="sourceLine" id="cb9-18" data-line-number="18">                 <span class="kw">else</span> <span class="dt">Just</span> (<span class="dt">Vector</span> as)</a>
+<a class="sourceLine" id="cb9-19" data-line-number="19"></a>
+<a class="sourceLine" id="cb9-20" data-line-number="20"><span class="ot">bools ::</span> <span class="dt">Vector</span> <span class="dt">N3</span> <span class="dt">Boolean</span></a>
+<a class="sourceLine" id="cb9-21" data-line-number="21">bools <span class="fu">=</span> true <span class="fu">:&lt;</span> false <span class="fu">:&lt;</span> true <span class="fu">:&lt;</span> nilVector</a></code></pre></div>
+</section><section class="slide level2">
+
+<h3 id="tuples">Tuples</h3>
+<ul>
+<li>The EVM is a stack based virtual machine with a maximum depth of 16. Limits the possible tuple sizes.</li>
+</ul>
+<div class="sourceCode" id="cb10"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">data</span> <span class="dt">Tuple0</span> <span class="fu">=</span> <span class="dt">Tuple0</span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="kw">newtype</span> <span class="dt">Tuple1</span> a <span class="fu">=</span> <span class="dt">Tuple1</span> a</a>
+<a class="sourceLine" id="cb10-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="fu">...</span></a>
+<a class="sourceLine" id="cb10-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="kw">data</span> <span class="dt">Tuple16</span> a b c d e f g h i j k l m n o p <span class="fu">=</span> </a>
+<a class="sourceLine" id="cb10-8" data-line-number="8">  <span class="dt">Tuple16</span> a b c d e f g h i j k l m n o p</a></code></pre></div>
+<ul>
+<li>First iteration of <code>purescript-web3</code> didn’t handle these well.</li>
+</ul>
+</section><section id="basic-deserialization" class="slide level2">
+<h2>Basic (De)Serialization</h2>
+<ul>
+<li>All basic Solidity types implement the following type classes for the ABI encoding schema.</li>
+</ul>
+<div class="sourceCode" id="cb11"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">class</span> <span class="dt">ABIEncode</span> a <span class="kw">where</span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="ot">  toDataBuilder ::</span> a <span class="ot">-&gt;</span> <span class="dt">HexString</span></a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="kw">class</span> <span class="dt">ABIDecode</span> a <span class="kw">where</span></a>
+<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="ot">  fromDataParser ::</span> <span class="dt">Parser</span> <span class="dt">String</span> a</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw">instance</span><span class="ot"> abiEncodeUint ::</span> <span class="dt">IntSize</span> n <span class="ot">=&gt;</span> <span class="dt">ABIEncode</span> (<span class="dt">UIntN</span> n) <span class="kw">where</span></a>
+<a class="sourceLine" id="cb12-2" data-line-number="2">  toDataBuilder a <span class="fu">=</span> uInt256HexBuilder <span class="fu">&lt;&lt;&lt;</span> unUIntN <span class="fu">$</span> a</a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="kw">instance</span><span class="ot"> abiDecodeUint ::</span> <span class="dt">IntSize</span> n <span class="ot">=&gt;</span> <span class="dt">ABIDecode</span> (<span class="dt">UIntN</span> n) <span class="kw">where</span></a>
+<a class="sourceLine" id="cb12-5" data-line-number="5">  fromDataParser <span class="fu">=</span> <span class="kw">do</span></a>
+<a class="sourceLine" id="cb12-6" data-line-number="6">    a <span class="ot">&lt;-</span> uInt256HexParser</a>
+<a class="sourceLine" id="cb12-7" data-line-number="7">    maybe (fail <span class="fu">$</span> msg a) pure <span class="fu">&lt;&lt;&lt;</span> uIntNFromBigNumber <span class="fu">$</span> a</a>
+<a class="sourceLine" id="cb12-8" data-line-number="8">  <span class="kw">where</span></a>
+<a class="sourceLine" id="cb12-9" data-line-number="9">    msg n <span class="fu">=</span> <span class="kw">let</span> size <span class="fu">=</span> sizeVal (<span class="dt">Proxy</span><span class="ot"> ::</span> <span class="dt">Proxy</span> n)</a>
+<a class="sourceLine" id="cb12-10" data-line-number="10">            <span class="kw">in</span> <span class="st">&quot;Couldn&#39;t parse as uint&quot;</span> <span class="fu">&lt;&gt;</span> show size <span class="fu">&lt;&gt;</span> <span class="st">&quot;:&quot;</span> <span class="fu">&lt;&gt;</span> show n</a></code></pre></div>
+</section><section id="tuples-1" class="slide level2">
+<h2>Tuples</h2>
+<ul>
+<li>All Solidity functions accept and return tuples.</li>
+<li>Events are emitted as tuples, though not as straight forward to handle.</li>
+<li>Encoding and Decoding implemented “generically”.</li>
+</ul>
+</section><section id="generics-primer-advanced" class="slide level2">
+<h2>Generics Primer (Advanced)</h2>
+<ul>
+<li>All “basic” purescript types (i.e. of kind <code>Type</code>) admit a generic decomposition</li>
+</ul>
+<div class="sourceCode" id="cb13"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">data</span> <span class="dt">Argument</span> a <span class="fu">=</span> <span class="dt">Argument</span> a</a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="kw">data</span> <span class="dt">Product</span> a b <span class="fu">=</span> <span class="dt">Product</span> a b</a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="kw">data</span> <span class="dt">Constructor</span> (<span class="ot">s ::</span> <span class="dt">Symbol</span>) a <span class="fu">=</span> <span class="dt">Constructor</span> a</a>
+<a class="sourceLine" id="cb13-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb13-5" data-line-number="5">from (<span class="dt">Tuple3</span> <span class="dt">Bool</span> <span class="dt">String</span> (<span class="dt">UInt</span> <span class="dt">D8</span>)) <span class="ot">::</span></a>
+<a class="sourceLine" id="cb13-6" data-line-number="6">  <span class="dt">Constructor</span> <span class="st">&quot;Tuple3&quot;</span> (<span class="dt">Product</span> (<span class="dt">Argument</span> <span class="dt">Bool</span>) (<span class="dt">Product</span> (<span class="dt">Argument</span> <span class="dt">String</span>) (<span class="dt">Argument</span> <span class="dt">UInt</span> <span class="dt">D8</span>))) </a></code></pre></div>
+</section><section id="generics-primer-advanced-1" class="slide level2">
+<h2>Generics Primer (Advanced)</h2>
+<ul>
+<li>Compiler implements generic decompositions for us, so we can use them for free.</li>
+<li>We can inductively build up generic types to have a certain property, such as <code>ABIEncode</code></li>
+</ul>
+<div class="sourceCode" id="cb14"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw">instance</span><span class="ot"> genericEncodeBase ::</span> <span class="dt">ABIEncode</span> a </a>
+<a class="sourceLine" id="cb14-2" data-line-number="2">                           <span class="ot">=&gt;</span> <span class="dt">GenericABIEncode</span> (<span class="dt">Argument</span> a)</a>
+<a class="sourceLine" id="cb14-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="kw">instance</span><span class="ot"> genericEncodeInductive ::</span> ( <span class="dt">ABIEncode</span> a</a>
+<a class="sourceLine" id="cb14-5" data-line-number="5">                                   , <span class="dt">GenericABIEncode</span> b</a>
+<a class="sourceLine" id="cb14-6" data-line-number="6">                                   ) </a>
+<a class="sourceLine" id="cb14-7" data-line-number="7">               <span class="ot">=&gt;</span> <span class="dt">GenericABIEncode</span> (<span class="dt">Product</span> (<span class="dt">Argument</span> a) b)</a></code></pre></div>
+</section><section id="generics" class="slide level2">
+<h2>Generics</h2>
+<ul>
+<li>enables extremely local reasoning, building up more complicated expressions from smaller ones whose correctness is easier to prove.</li>
+<li>code utilizing “generics” is extremely reusable.</li>
+</ul>
+<div class="sourceCode" id="cb15"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="ot">genericEncode ::</span></a>
+<a class="sourceLine" id="cb15-2" data-line-number="2">  forall a rep <span class="fu">.</span></a>
+<a class="sourceLine" id="cb15-3" data-line-number="3">     <span class="dt">Generic</span> a rep</a>
+<a class="sourceLine" id="cb15-4" data-line-number="4">  <span class="ot">=&gt;</span> <span class="dt">GenericABIEncode</span> rep</a>
+<a class="sourceLine" id="cb15-5" data-line-number="5">  <span class="ot">=&gt;</span> a</a>
+<a class="sourceLine" id="cb15-6" data-line-number="6">  <span class="ot">-&gt;</span> <span class="dt">HexString</span></a>
+<a class="sourceLine" id="cb15-7" data-line-number="7">genericABIEncode <span class="fu">=</span> genericToDataBuilder <span class="fu">&lt;&lt;&lt;</span> from</a></code></pre></div>
+</section><section id="web3-api" class="slide level2">
+<h2>Web3 API</h2>
+<ul>
+<li>The Web3 API is a set of RPC methods that the ethereum client knows about</li>
+<li>There are a lot, the type signatures serve as a sort of <a href="https://pursuit.purescript.org/packages/purescript-web3/0.9.0/docs/Network.Ethereum.Web3.Api">documentation</a></li>
+</ul>
+<div class="sourceCode" id="cb16"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="ot">eth_sendTransaction ::</span> forall p e <span class="fu">.</span> <span class="dt">IsAsyncProvider</span> p </a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">                    <span class="ot">=&gt;</span> <span class="dt">TransactionOptions</span> </a>
+<a class="sourceLine" id="cb16-3" data-line-number="3">                    <span class="ot">-&gt;</span> <span class="dt">Web3</span> p e <span class="dt">HexString</span></a>
+<a class="sourceLine" id="cb16-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="ot">eth_newFilter ::</span> forall p e <span class="fu">.</span> <span class="dt">IsAsyncProvider</span> p </a>
+<a class="sourceLine" id="cb16-6" data-line-number="6">              <span class="ot">=&gt;</span> <span class="dt">Filter</span> </a>
+<a class="sourceLine" id="cb16-7" data-line-number="7">              <span class="ot">-&gt;</span> <span class="dt">Web3</span> p e <span class="dt">FilterId</span></a>
+<a class="sourceLine" id="cb16-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb16-9" data-line-number="9"><span class="ot">eth_getFilterChanges ::</span> forall p e <span class="fu">.</span> <span class="dt">IsAsyncProvider</span> p </a>
+<a class="sourceLine" id="cb16-10" data-line-number="10">                     <span class="ot">=&gt;</span> <span class="dt">FilterId</span> </a>
+<a class="sourceLine" id="cb16-11" data-line-number="11">                     <span class="ot">-&gt;</span> <span class="dt">Web3</span> p e (<span class="dt">Array</span> <span class="dt">Change</span>)</a>
+<a class="sourceLine" id="cb16-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb16-13" data-line-number="13"><span class="fu">...</span></a></code></pre></div>
+</section><section id="web3-api-1" class="slide level2">
+<h2>Web3 API</h2>
+<ul>
+<li>Implementation of the client portion heavily inspired by the <code>hs-web3</code> implementation.</li>
+<li>How easy is it to add new endpoints as they are released?</li>
+</ul>
+<div class="sourceCode" id="cb17"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="ot">signMessage ::</span> forall p e <span class="fu">.</span> <span class="dt">IsAsyncProvider</span> p</a>
+<a class="sourceLine" id="cb17-2" data-line-number="2">            <span class="ot">=&gt;</span> <span class="dt">Address</span> <span class="co">-- unlocked account</span></a>
+<a class="sourceLine" id="cb17-3" data-line-number="3">            <span class="ot">-&gt;</span> <span class="dt">HexString</span> <span class="co">-- message to sign</span></a>
+<a class="sourceLine" id="cb17-4" data-line-number="4">            <span class="ot">-&gt;</span> <span class="dt">Web3</span> p e <span class="dt">HexString</span> <span class="co">-- signed message</span></a></code></pre></div>
+<p><a href="https://github.com/f-o-a-m/purescript-web3/blob/master/src/Network/Ethereum/Web3/Api.purs">Pretty easy!</a></p>
+</section><section id="user-interface" class="slide level2">
+<h2>User Interface</h2>
+<p>You will be able to use <code>purescript-web3</code> without knowing how it works. This means:</p>
+<ol type="1">
+<li>Calling contract methods, listening for events, querying blockchain metadata, full web3 api implementation.</li>
+<li>Integrating with metamask.</li>
+<li>Easily generate a simple client library for every contract.</li>
+</ol>
+</section><section id="generator---simple-storage" class="slide level2">
+<h2>Generator - Simple Storage</h2>
+<p>Simple Storage allows us to change a <code>uint256</code>, query that state, and listen for updates to that state.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb18-1" data-line-number="1">contract SimpleStorage <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-2" data-line-number="2">    uint <span class="kw">public</span> count<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-3" data-line-number="3">    event <span class="at">CountSet</span>(uint _count)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-4" data-line-number="4">    <span class="kw">function</span> <span class="at">setCount</span>(uint _count) <span class="op">{</span></a>
+<a class="sourceLine" id="cb18-5" data-line-number="5">        count <span class="op">=</span> _count<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-6" data-line-number="6">        <span class="at">CountSet</span>(_count)<span class="op">;</span></a>
+<a class="sourceLine" id="cb18-7" data-line-number="7">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb18-8" data-line-number="8"><span class="op">}</span></a></code></pre></div>
+</section><section id="generator---simple-storage-1" class="slide level2">
+<h2>Generator - Simple Storage</h2>
+<p>Here is the client library generated which is generated from the ABI <a href="#/fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="ot">count ::</span> forall e p <span class="fu">.</span> <span class="dt">IsAsyncProvider</span> p </a>
+<a class="sourceLine" id="cb19-2" data-line-number="2">      <span class="ot">=&gt;</span> <span class="dt">Address</span> </a>
+<a class="sourceLine" id="cb19-3" data-line-number="3">      <span class="ot">-&gt;</span> <span class="dt">Maybe</span> <span class="dt">Address</span> </a>
+<a class="sourceLine" id="cb19-4" data-line-number="4">      <span class="ot">-&gt;</span> <span class="dt">CallMode</span> </a>
+<a class="sourceLine" id="cb19-5" data-line-number="5">      <span class="ot">-&gt;</span> <span class="dt">Web3</span> p e (<span class="dt">UIntN</span> (<span class="dt">D2</span> <span class="fu">:&amp;</span> <span class="dt">D5</span> <span class="fu">:&amp;</span> <span class="dt">D6</span>))</a>
+<a class="sourceLine" id="cb19-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb19-7" data-line-number="7"><span class="ot">setCount ::</span> forall e p <span class="fu">.</span> <span class="dt">IsAsyncProvider</span> p </a>
+<a class="sourceLine" id="cb19-8" data-line-number="8">         <span class="ot">=&gt;</span> <span class="dt">Maybe</span> <span class="dt">Address</span> </a>
+<a class="sourceLine" id="cb19-9" data-line-number="9">         <span class="ot">-&gt;</span> <span class="dt">Address</span> </a>
+<a class="sourceLine" id="cb19-10" data-line-number="10">         <span class="ot">-&gt;</span> <span class="dt">UIntN</span> (<span class="dt">D2</span> <span class="fu">:&amp;</span> <span class="dt">D5</span> <span class="fu">:&amp;</span> <span class="dt">D6</span>) </a>
+<a class="sourceLine" id="cb19-11" data-line-number="11">         <span class="ot">-&gt;</span> <span class="dt">Web3</span> p e <span class="dt">HexString</span></a>
+<a class="sourceLine" id="cb19-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb19-13" data-line-number="13"><span class="kw">newtype</span> <span class="dt">CountSet</span> <span class="fu">=</span> </a>
+<a class="sourceLine" id="cb19-14" data-line-number="14">  <span class="dt">CountSet</span> {<span class="ot"> _count ::</span> <span class="dt">UIntN</span> (<span class="dt">D2</span> <span class="fu">:&amp;</span> <span class="dt">D5</span> <span class="fu">:&amp;</span> <span class="dt">D6</span>) }</a></code></pre></div>
+</section><section id="generator---benefits" class="slide level2">
+<h2>Generator - Benefits</h2>
+<ol type="1">
+<li>Reduce boiler plate.</li>
+<li>You don’t want to access the raw encoders/decoders manually when templating your transactions, laborious and potentially error prone.</li>
+<li>The generator is meant to be run as an <code>npm build</code> step - any breaking changes to your contracts will cause compile time errors in your application.</li>
+<li>Specially generated types allow for higher levels of abstraction in library.</li>
+</ol>
+</section><section id="generator---how-does-it-work" class="slide level2">
+<h2>Generator - How does it work</h2>
+<p>As an example, take a function call that generates a transaction:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw">type</span> <span class="dt">SetCountFn</span> <span class="fu">=</span> <span class="dt">Tagged</span> (<span class="dt">SProxy</span> <span class="st">&quot;setCount(uint256)&quot;</span>) (<span class="dt">Tuple1</span> (<span class="dt">UIntN</span> (<span class="dt">D2</span> <span class="fu">:&amp;</span> <span class="dt">D5</span> <span class="fu">:&amp;</span> <span class="dt">D6</span>)))</a>
+<a class="sourceLine" id="cb20-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb20-3" data-line-number="3"><span class="ot">setCount ::</span> forall e p <span class="fu">.</span> <span class="dt">IsAsyncProvider</span> p </a>
+<a class="sourceLine" id="cb20-4" data-line-number="4">         <span class="ot">=&gt;</span> <span class="dt">Maybe</span> <span class="dt">Address</span> </a>
+<a class="sourceLine" id="cb20-5" data-line-number="5">         <span class="ot">-&gt;</span> <span class="dt">Address</span> </a>
+<a class="sourceLine" id="cb20-6" data-line-number="6">         <span class="ot">-&gt;</span> <span class="dt">UIntN</span> (<span class="dt">D2</span> <span class="fu">:&amp;</span> <span class="dt">D5</span> <span class="fu">:&amp;</span> <span class="dt">D6</span>) </a>
+<a class="sourceLine" id="cb20-7" data-line-number="7">         <span class="ot">-&gt;</span> <span class="dt">Web3</span> p e <span class="dt">HexString</span></a>
+<a class="sourceLine" id="cb20-8" data-line-number="8">setCount x0 x1 x2 <span class="fu">=</span> sendTx x0 x1 noPay ((tagged <span class="fu">$</span> <span class="dt">Tuple1</span> x2)<span class="ot"> ::</span> <span class="dt">SetCountFn</span>)</a></code></pre></div>
+<p>Notice the <code>noPay</code></p>
+</section><section id="generator---how-does-it-work-1" class="slide level2">
+<h2>Generator - How does it work</h2>
+<ul>
+<li>All templated transaction functions are run with the <code>sendTx</code> method:</li>
+</ul>
+<div class="sourceCode" id="cb21"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw">class</span> <span class="dt">TxMethod</span> (<span class="ot">selector ::</span> <span class="dt">Symbol</span>) a <span class="kw">where</span></a>
+<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="ot">    sendTx ::</span> forall p e u<span class="fu">.</span></a>
+<a class="sourceLine" id="cb21-3" data-line-number="3">              <span class="dt">IsAsyncProvider</span> p</a>
+<a class="sourceLine" id="cb21-4" data-line-number="4">      <span class="ot">=&gt;</span> <span class="dt">IsSymbol</span> selector</a>
+<a class="sourceLine" id="cb21-5" data-line-number="5">      <span class="ot">=&gt;</span> <span class="dt">EtherUnit</span> u</a>
+<a class="sourceLine" id="cb21-6" data-line-number="6">      <span class="ot">=&gt;</span> <span class="dt">Maybe</span> <span class="dt">Address</span>              <span class="co">-- Contract address</span></a>
+<a class="sourceLine" id="cb21-7" data-line-number="7">      <span class="ot">-&gt;</span> <span class="dt">Address</span>                    <span class="co">-- From address</span></a>
+<a class="sourceLine" id="cb21-8" data-line-number="8">      <span class="ot">-&gt;</span> u                          <span class="co">-- paymentValue </span></a>
+<a class="sourceLine" id="cb21-9" data-line-number="9">      <span class="ot">-&gt;</span> <span class="dt">Tagged</span> (<span class="dt">SProxy</span> selector) a <span class="co">-- Method data</span></a>
+<a class="sourceLine" id="cb21-10" data-line-number="10">      <span class="ot">-&gt;</span> <span class="dt">Web3</span> p e <span class="dt">HexString</span>         <span class="co">-- &#39;Web3&#39; wrapped tx hash</span></a></code></pre></div>
+<ul>
+<li><code>call</code> methods are similar, but with a return type</li>
+</ul>
+</section><section id="generator---events" class="slide level2">
+<h2>Generator - Events</h2>
+<ul>
+<li>Events were difficult to find a good solution for due to the Ethereum log structure.</li>
+<li>All events can be handled with the <code>event</code> method, which similarly defined in <code>hs-web3</code></li>
+</ul>
+<div class="sourceCode" id="cb22"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="ot">event ::</span> forall p e a i ni<span class="fu">.</span> <span class="dt">IsAsyncProvider</span> p</a>
+<a class="sourceLine" id="cb22-2" data-line-number="2">      <span class="ot">=&gt;</span> <span class="dt">DecodeEvent</span> i ni a</a>
+<a class="sourceLine" id="cb22-3" data-line-number="3">      <span class="ot">=&gt;</span> <span class="dt">EventFilter</span> a</a>
+<a class="sourceLine" id="cb22-4" data-line-number="4">      <span class="ot">=&gt;</span> <span class="dt">Address</span></a>
+<a class="sourceLine" id="cb22-5" data-line-number="5">      <span class="ot">-&gt;</span> (a <span class="ot">-&gt;</span> <span class="dt">ReaderT</span> <span class="dt">Change</span> (<span class="dt">Web3</span> p e) <span class="dt">EventAction</span>)</a>
+<a class="sourceLine" id="cb22-6" data-line-number="6">      <span class="ot">-&gt;</span> <span class="dt">Web3</span> p e (<span class="dt">Fiber</span> (<span class="ot">eth ::</span> <span class="dt">ETH</span> <span class="fu">|</span> e) <span class="dt">Unit</span>)</a></code></pre></div>
+<ul>
+<li>this looks more complicated than it is.</li>
+</ul>
+</section><section id="events---example" class="slide level2">
+<h2>Events - Example</h2>
+<ul>
+<li>Here’s an example of the event monitor in the example app. It registers a handler and asynchronously polls a filter for the <code>CountSet</code> event, updating the React component’s state.</li>
+<li>Since the return value of the handler is always <code>ContinueEvent</code>, this poll never terminates.</li>
+</ul>
+<div class="sourceCode" id="cb23"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="ot">monitorCount ::</span> <span class="dt">R.ComponentDidMount</span> <span class="dt">CountStateProps</span> <span class="dt">CountState</span> (<span class="ot">eth ::</span> <span class="dt">ETH</span> <span class="fu">|</span> eff)</a>
+<a class="sourceLine" id="cb23-2" data-line-number="2">monitorCount this <span class="fu">=</span> void <span class="fu">$</span> <span class="kw">do</span></a>
+<a class="sourceLine" id="cb23-3" data-line-number="3">  props <span class="ot">&lt;-</span> R.getProps this</a>
+<a class="sourceLine" id="cb23-4" data-line-number="4">  launchAff <span class="kw">do</span></a>
+<a class="sourceLine" id="cb23-5" data-line-number="5">    void <span class="fu">$</span> runWeb3 metamask <span class="fu">$</span></a>
+<a class="sourceLine" id="cb23-6" data-line-number="6">      event config<span class="fu">.</span>simpleStorageAddress <span class="fu">$</span> \(<span class="dt">SimpleStorage.CountSet</span> cs) <span class="ot">-&gt;</span> <span class="kw">do</span></a>
+<a class="sourceLine" id="cb23-7" data-line-number="7">      _ <span class="ot">&lt;-</span> liftEff <span class="fu">&lt;&lt;&lt;</span> R.transformState this <span class="fu">$</span> _{currentCount<span class="fu">=</span> show cs<span class="fu">.</span>_count}</a>
+<a class="sourceLine" id="cb23-8" data-line-number="8">      pure <span class="dt">ContinueEvent</span></a></code></pre></div>
+</section><section id="more-complicated-example" class="slide level2">
+<h2>More Complicated Example</h2>
+<ul>
+<li>ERC20 Token Monitor</li>
+<li>FOAM Spatial Index</li>
+</ul>
+</section><section class="slide level2">
+
+<center>
+Fin
+</center>
+</section></section>
+<section class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>What about gas?<a href="#/fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>There are a few other boiler plate type declarations that are generated, but this is pretty much it.<a href="#/fnref2" class="footnote-back">↩</a></p></li>
+</ol>
+</section>
+    </div>
+  </div>
+
+  <script src="reveal.js/lib/js/head.min.js"></script>
+  <script src="reveal.js/js/reveal.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        // Push each slide change to the browser history
+        history: true,
+        // Transition style
+        transition: 'none', // none/fade/slide/convex/concave/zoom
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'reveal.js/plugin/zoom-js/zoom.js', async: true },
+          { src: 'reveal.js/plugin/notes/notes.js', async: true }
+        ]
+      });
+    </script>
+    </body>
+</html>
